@@ -110,3 +110,5 @@ dist
 logs
 **/*.backup.*
 **/*.back.*
+**/bundle.js
+**/bundle.js.LICENSE.txt
