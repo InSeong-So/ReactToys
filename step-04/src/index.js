@@ -1,19 +1,25 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import WikiEdit from '../components/WikiEdit';
-import WikiShow from '../components/WikiShow';
-
-const WikiApp = () => (
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {
+  BrowserRouter as Router,
+  Route, Switch
+} from 'react-router-dom'
+import SNSUsers from '../components/SNS/Users'
+import SNSTimeline from '../components/SNS/Timeline'
+import SNSLogin from '../components/SNS/Login'
+const SNSApp = () => (
   <Router>
     <div>
-      <Route path='/wiki/:name' component={WikiShow} />
-      <Route path='/edit/:name' component={WikiEdit} />
+      <Switch>
+        <Route path='/users' component={SNSUsers} />
+        <Route path='/timeline' component={SNSTimeline} />
+        <Route path='/login' component={SNSLogin} />
+        <Route component={SNSLogin} />
+      </Switch>
     </div>
   </Router>
-);
-
-ReactDOM.render(
-  <WikiApp />,
-  document.getElementById('root'),
 )
+// DOM의 내용을 메인 컴포넌트로 변경합니다.
+ReactDOM.render(
+  <SNSApp />,
+  document.getElementById('root'))
