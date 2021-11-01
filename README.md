@@ -165,7 +165,7 @@
 <br>
 
 ### step-05 [디렉토리 Link](https://github.com/InSeong-So/ReactToys/tree/main/step-05)
-- 개요 : Vanilla JS를 접목시켜 생각하기, 소규모 단위 컴포넌트를 구현하고 이를 순수 JavaScript로만 구현
+- 개요 : 일정 관리 애플리케이션 만들기
 - 라이브러리 : 상단 공통 라이브러리 참조
 
 <br>
