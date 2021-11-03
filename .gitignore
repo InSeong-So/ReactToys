@@ -113,5 +113,4 @@ logs
 **/bundle.js
 **/bundle.js.LICENSE.txt
 .sass-cache/
-step-07/public/
-step-08/public/
+**/public/
