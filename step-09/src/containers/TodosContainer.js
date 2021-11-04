@@ -54,4 +54,6 @@ const TodosContainer = () => {
   );
 };
 
+// connect는 props를 비교하여 렌더링하는 성능 최적화가 적용되어 있지만
+// useSelector를 사용하면 최적화가 이루어지지 않는다.
 export default React.memo(TodosContainer);
