@@ -132,8 +132,12 @@ module.exports = {
   resolve: {
     modules: [ 'node_modules' ],
   },
-  externals: [ nodeExternals() ],
-  plugins  : [
+  externals: [
+    nodeExternals({
+      allowlist: [ /@babel/ ],
+    }),
+  ],
+  plugins: [
     new webpack.DefinePlugin(env.stringified), // 환경변수를 주입해줍니다.
   ],
 };
