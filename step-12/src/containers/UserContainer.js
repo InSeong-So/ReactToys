@@ -1,29 +1,23 @@
 import React, { useEffect } from 'react';
-import Users from '../components/Users';
-import { connect } from 'react-redux';
-import { getUsers } from '../modules/users';
+import { useSelector, useDispatch } from 'react-redux';
+import User from '../components/User';
 import { Preloader } from '../lib/PreloadContext';
+import { getUser } from '../modules/users';
 
-const UserContainer = ({ users, getUsers }) => {
+const UserContainer = ({ id }) => {
+  const user = useSelector(state => state.users.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if(users) return;
-    getUsers();
-  }, [ getUsers, users ]);
 
-  return (
-    <>
-      <Users users={users}/>
-      <Preloader resolve={getUsers} />
-    </>
-  );
+    if (user && user.id === +id) return;
+    dispatch(getUser(id));
+  }, [ dispatch, id, user ]);
+
+  if (!user) {
+    return <Preloader resolve={() => dispatch(getUser(id))} />;
+  }
+  return <User user={user} />;
 };
 
-export default connect(
-  ({ users }) => ({
-    users: users.users,
-  }),
-  {
-    getUsers,
-  },
-)(UserContainer);
+export default UserContainer;
