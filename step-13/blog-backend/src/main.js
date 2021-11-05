@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 import api from './api';
 import jwtMiddelware from './lib/jwtMiddleware';
-import createFakeData from './createFakeData';
+// import createFakeData from './createFakeData';
 
 require('dotenv').config();
 
@@ -15,7 +15,7 @@ mongoose
   .connect(MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log('Connected to MongoDB');
-    createFakeData();
+    // createFakeData();
   })
   .catch(error => {
     console.log(error);

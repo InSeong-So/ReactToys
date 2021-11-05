@@ -8,27 +8,27 @@ const UserSchema = new Schema({
 });
 
 // 인스턴스 메서드는 화살표 함수를 사용하면 문서 인스턴스에 접근하지 못합니다.
-UserSchema.methods.setPassword = async function (password) {
+UserSchema.methods.setPassword = async function setPassword(password) {
   const hash = await bcrypt.hash(password, 10);
   this.hashedPassword = hash;
 };
 
-UserSchema.methods.checkPassword = async function (password) {
+UserSchema.methods.checkPassword = async function checkPassword(password) {
   const result = await bcrypt.compare(password, this.hashedPassword);
   return result;
 };
 
-UserSchema.statics.findByUsername = function (username) {
+UserSchema.statics.findByUsername = function findByUsername(username) {
   return this.findOne({ username });
 };
 
-UserSchema.methods.serialize = function () {
+UserSchema.methods.serialize = function serialize() {
   const data = this.toJSON();
   delete data.hashedPassword;
   return data;
 };
 
-UserSchema.methods.generateToken = function () {
+UserSchema.methods.generateToken = function generateToken() {
   const token = jwt.sign(
     // 첫 번째 파라미터는 토큰 안에 넣고 싶은 데이터를 전달합니다.
     {
@@ -39,7 +39,7 @@ UserSchema.methods.generateToken = function () {
     process.env.JWT_SECRET,
     // 세 번째 파라미터는 유효 기간을 입력합니다.
     {
-      expiresIn: '3d',
+      expiresIn: '7d',
     },
   );
   return token;
