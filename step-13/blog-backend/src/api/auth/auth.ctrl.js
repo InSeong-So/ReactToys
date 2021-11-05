@@ -1,6 +1,12 @@
 import Joi from 'joi';
 import User from '../../models/user';
 
+/**
+ * 회원가입
+ *
+ * @param {*} ctx
+ * @returns
+ */
 export const register = async ctx => {
   const schema = Joi.object().keys({
     username: Joi.string().alphanum().min(3).max(20).required(),
@@ -25,17 +31,23 @@ export const register = async ctx => {
     });
     await user.setPassword(password);
     await user.save();
-    ctx.body = user.serialize();
-
-    const token = user.generateToken();
-    ctx.cookies.set('access_token', token, {
+    ctx.cookies.set('access_token', user.generateToken(), {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
       httpOnly: true,
     });
+    ctx.status = 201;
+    ctx.body = user.serialize();
   } catch (error) {
     ctx.throw(500, error);
   }
 };
+
+/**
+ * 로그인
+ *
+ * @param {*} ctx
+ * @returns
+ */
 export const login = async ctx => {
   const { username, password } = ctx.request.body;
 
@@ -55,16 +67,23 @@ export const login = async ctx => {
       ctx.status = 401;
       return;
     }
-    ctx.body = user.serialize();
-    const token = user.generateToken();
-    ctx.cookies.set('access_token', token, {
+    ctx.cookies.set('access_token', user.generateToken(), {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
       httpOnly: true,
     });
+    ctx.status = 200;
+    ctx.body = user.serialize();
   } catch (error) {
     ctx.throw(500, error);
   }
 };
+
+/**
+ * 로그인 체크
+ *
+ * @param {*} ctx
+ * @returns
+ */
 export const check = async ctx => {
   const { user } = ctx.state;
   if (!user) {
@@ -72,9 +91,17 @@ export const check = async ctx => {
     ctx.status = 401;
     return;
   }
+  ctx.status = 200;
   ctx.body = user;
 };
+
+/**
+ * 로그아웃
+ *
+ * @param {*} ctx
+ */
 export const logout = async ctx => {
   ctx.cookies.set('access_token');
   ctx.status = 204;
+  ctx.body = 'Logged Out';
 };

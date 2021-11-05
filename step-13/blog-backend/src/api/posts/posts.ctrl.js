@@ -56,6 +56,7 @@ export const write = async ctx => {
   });
   try {
     await post.save();
+    ctx.status = 201;
     ctx.body = post;
   } catch (error) {
     ctx.throw(500, error);
@@ -87,6 +88,7 @@ export const list = async ctx => {
       .exec();
     const postCount = await Post.countDocuments(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 10));
+    ctx.status = 200;
     ctx.body = posts.map(post => ({
       ...post,
       body:
@@ -105,6 +107,7 @@ export const list = async ctx => {
 };
 
 export const read = async ctx => {
+  ctx.status = 200;
   ctx.body = ctx.state.post;
 };
 
@@ -120,6 +123,7 @@ export const remove = async ctx => {
   try {
     await Post.findByIdAndRemove(id).exec();
     ctx.status = 204; // No Content
+    ctx.body = 'Removed';
   } catch (error) {
     ctx.throw(500, error);
   }
@@ -149,6 +153,7 @@ export const update = async ctx => {
       ctx.status = 404;
       return;
     }
+    ctx.status = 200;
     ctx.body = post;
   } catch (error) {
     ctx.throw(500, error);
