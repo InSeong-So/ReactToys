@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 
 import api from './api';
+import jwtMiddelware from './lib/jwtMiddleware';
 import createFakeData from './createFakeData';
 
 require('dotenv').config();
@@ -28,6 +29,7 @@ router.use('/api', api.routes()); // api 라우트 적용
 
 // 라우터 적용 전에 bodyParser 적용
 app.use(bodyParser());
+app.use(jwtMiddelware);
 
 // router.get('/about/:name?', ctx => {
 //   const { name } = ctx.params;
