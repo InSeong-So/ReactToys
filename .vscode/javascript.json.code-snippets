@@ -1,0 +1,23 @@
+{
+  "Styled React Functional": {
+    "prefix": "rafces",
+    "body": [
+      "import React from 'react';",
+      "import styled from 'styled-components';",
+      "",
+      "const Styled${TM_FILENAME_BASE} = styled.div``;",
+      "",
+      "const ${TM_FILENAME_BASE} = () => {",
+      "  return (",
+      "    <Styled${TM_FILENAME_BASE}>",
+      "      ",
+      "    </Styled${TM_FILENAME_BASE}>",
+      "  );",
+      "};",
+      "",
+      "export default ${TM_FILENAME_BASE};",
+      ""
+    ],
+    "description": "Styled React Functional"
+  }
+}
