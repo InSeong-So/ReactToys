@@ -14,5 +14,10 @@ const PostSchema = new Schema({
   },
 });
 
+PostSchema.methods.serialize = function serialize() {
+  const data = this.toJSON();
+  return data;
+};
+
 const Post = mongoose.model('Post', PostSchema);
 export default Post;

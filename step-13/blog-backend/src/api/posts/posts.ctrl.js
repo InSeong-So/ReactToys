@@ -48,16 +48,16 @@ export const write = async ctx => {
   }
 
   const { title, body, tags } = ctx.request.body;
-  const post = new Post({
-    title,
-    body,
-    tags,
-    user: ctx.state.user,
-  });
   try {
+    const post = new Post({
+      title,
+      body,
+      tags,
+      user: ctx.state.user,
+    });
     await post.save();
     ctx.status = 201;
-    ctx.body = post;
+    ctx.body = post.serialize();
   } catch (error) {
     ctx.throw(500, error);
   }

@@ -1,12 +1,20 @@
 import React from 'react';
-import Editor from '../components/write/Editor';
 import Responsive from '../components/common/Responsive';
+import HeaderContainer from '../containers/common/HeaderContainer';
+import EditorContainer from '../containers/write/EditorContainer';
+import TagBoxContainer from '../containers/write/TagBoxContainer';
+import WriteActionButtonsContainer from '../containers/write/WriteActionButtonsContainer';
 
 const WritePage = () => {
   return (
-    <Responsive>
-      <Editor />
-    </Responsive>
+    <>
+      <HeaderContainer/>
+      <Responsive>
+        <EditorContainer />
+        <TagBoxContainer />
+        <WriteActionButtonsContainer />
+      </Responsive>
+    </>
   );
 };
 
