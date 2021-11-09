@@ -35,7 +35,6 @@ const QuillWrapper = styled.div`
   }
 `;
 
-
 const Editor = ({ title, body, onChangeField }) => {
   const quillElement = useRef(null);  // Quill 적용할 DivElement
   const quillInstance = useRef(null);  // Quill 인스턴스
@@ -76,6 +75,13 @@ const Editor = ({ title, body, onChangeField }) => {
   const onChangeTitle = ({ target }) => {
     onChangeField({ key: 'title', value: target.value });
   };
+
+  const mounted = useRef(false);
+  useEffect(() => {
+    if(mounted.current) return;
+    mounted.current = true;
+    quillInstance.current.root.innerHTML = body;
+  }, [ body ]);
 
   return (
     <StyledEditor>
