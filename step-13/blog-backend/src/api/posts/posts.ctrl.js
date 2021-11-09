@@ -1,8 +1,33 @@
 import mongoose from 'mongoose';
 import Joi from 'joi';
+import sanitize from 'sanitize-html';
 import Post from '../../models/post';
 
 const { ObjectId } = mongoose.Types;
+
+const sanitizeOptions = {
+  allowedTags: [
+    'h1',
+    'h2',
+    'b',
+    'i',
+    'u',
+    's',
+    'p',
+    'ul',
+    'ol',
+    'li',
+    'blockquote',
+    'a',
+    'img',
+  ],
+  allowedAttributes: {
+    a: ['href', 'name', 'target'],
+    img: ['src'],
+    li: ['class'],
+  },
+  allowedSchemes: ['data', 'http'],
+};
 
 export const getPostById = async (ctx, next) => {
   const { id } = ctx.params;
@@ -51,7 +76,7 @@ export const write = async ctx => {
   try {
     const post = new Post({
       title,
-      body,
+      body: sanitize(body, sanitizeOptions),
       tags,
       user: ctx.state.user,
     });
@@ -64,6 +89,13 @@ export const write = async ctx => {
 };
 
 export const list = async ctx => {
+  const removeHtmlAndShorten = body => {
+    const filtered = sanitize(body, {
+      allowedTags: [],
+    });
+    return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
+  };
+
   // query는 문자열이므로 숫자로 변환해야 합니다.
   // 값이 없다면 default는 1로 설정합니다.
   const page = +ctx.query.page || 1;
@@ -91,8 +123,7 @@ export const list = async ctx => {
     ctx.status = 200;
     ctx.body = posts.map(post => ({
       ...post,
-      body:
-        post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...`,
+      body: removeHtmlAndShorten(post.body),
     }));
     // ctx.body = posts
     //   .map(post => post.toJSON())
@@ -145,8 +176,13 @@ export const update = async ctx => {
     return;
   }
 
+  const nextData = { ...ctx.request.body };
+  if (nextData.body) {
+    nextData.body = sanitize(nextData.body, sanitizeOptions);
+  }
+
   try {
-    const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
+    const post = await Post.findByIdAndUpdate(id, nextData, {
       new: true, // 업데이트 된 값을 반환하고, false인 경우 업데이트 전의 값을 반환합니다.
     }).exec();
     if (!post) {
